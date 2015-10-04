@@ -1,0 +1,47 @@
+{
+  "name": "eig/imaginator",
+  "description": "A PHP Generic Validator Service Object",
+  "license": "MIT",
+  "keywords": ["Image storage and retrieval with persistence hooks", "image loader service"],
+  "type": "library",
+  "homepage": "https://github.com/excellentingenuity/imaginator",
+  "authors": [
+    {
+      "name": "James Johnson",
+      "email": "james.johnson@excellentingenuity.com",
+      "role": "Developer/Maintainer"
+    }
+  ],
+  "support": {
+    "docs": "https://github.com/excellentingenuity/imaginator",
+    "issues": "https://github.com/excellentingenuity/imaginator/issues",
+    "wiki": "https://github.com/excellentingenuity/imaginator/wiki"
+  },
+  "require": {
+    "php": ">=5.6",
+    "league/flysystem": "^1.0",
+    "intervention/image": "^2.3",
+    "eig/configurator": "^1.0"
+
+  },
+  "require-dev": {
+    "mockery/mockery": "0.9.*",
+    "satooshi/php-coveralls": "dev-master",
+    "phpunit/phpunit": "~5.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "eig\\Imaginator\\": "src/Imaginator"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "eig\\Imaginator\\Test\\": "src/tests"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "master": "master-dev"
+    }
+  }
+}
