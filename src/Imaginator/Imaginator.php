@@ -1,13 +1,23 @@
 <?php
 
-namespace eig\imaginator;
+namespace eig\Imaginator;
 
-/**
- * User: James Johnson
- * Date: 10/4/15
- * Time: 2:34 PM
- */
+use eig\Configurator\Configurator;
+
 class Imaginator
 {
+    protected $config_files = [
+        [
+            'source' => 'Imaginator.json',
+            'path' => '/config/',
+            'pathType' => 'relative',
+            'type' => 'json',
+            'alias' => 'Imaginator'
+        ],
+    ];
+    protected $config = null;
 
+    public function __construct() {
+        $this->config = Configurator::make($this->config_files);
+    }
 }
