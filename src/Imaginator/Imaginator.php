@@ -4,13 +4,14 @@ namespace eig\Imaginator;
 
 use eig\Configurator\Configurator as Config;
 use eig\Configurator\Options as ConfigOptions;
+use eig\Imaginator\Exceptions\ImaginatorException;
 
 class Imaginator
 {
     protected $configFiles = [
         [
             'source' => 'ImaginatorConfiguration.php',
-            'path' => '/config/',
+            'path' => 'config/',
             'pathType' => 'relative',
             'type' => 'array',
             'alias' => 'Imaginator'
@@ -23,20 +24,30 @@ class Imaginator
 
     protected $configOptions;
 
-    public function __construct($configurationFile = null) {
+    public function __construct() {
 
-        $this->loadConfiguration($configurationFile);
+        $this->loadConfiguration();
 
     }
 
-    protected function loadConfiguration($configurationFile) {
+    protected function loadConfiguration() {
+        // set the Configurator Options
+        // including the basePath for where the configuration file exists
         $this->configOptions = new ConfigOptions();
-        if ($configurationFile == null) {
-            $this->configOptions->basePath = realpath('config');
-        } else {
-            $this->configOptions->basePath = realpath($configurationFile);
+        $this->configOptions->basePath = realpath('config');
+        try
+        {
+            // try to load and Configurator Configuration for Imaginator
+            $this->packageConfig = new Config($this->configFiles, $this->configOptions);
         }
-        $this->packageConfig = new Config($this->configFiles, $this->configOptions);
+        catch (\Exception $exception) {
+            throw new ImaginatorException(
+                'Error: Unable to load Imaginator Configuration',
+                1,
+                $exception
+            );
+        }
+        // set the Imaginator configuration to config
         $this->config = $this->packageConfig['Imaginator'];
     }
 
