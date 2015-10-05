@@ -2,6 +2,7 @@
 
 namespace eig\Imaginator\Tests;
 
+use eig\Imaginator\Factory\ImaginatorFactory;
 use eig\Imaginator\Imaginator;
 use StevenWadeJr\Exposure\Factory;
 
@@ -19,7 +20,7 @@ class ImaginatorTest extends \PHPUnit_Framework_TestCase
 
     public function setup ()
     {
-        $this->imaginator = new Imaginator();
+        $this->imaginator = ImaginatorFactory::make();
 
     }
 
@@ -32,7 +33,7 @@ class ImaginatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf(
             'eig\Imaginator\Imaginator',
-            new Imaginator('example\imaginator.json')
+            ImaginatorFactory::make()
         );
     }
 
@@ -44,7 +45,7 @@ class ImaginatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testConfigImagesDir()
     {
-        $this->exposedImaginator = Factory::expose(new Imaginator);
+        $this->exposedImaginator = Factory::expose(ImaginatorFactory::make());
         $this->assertEquals(
             'public/images',
             $this->exposedImaginator->config['Images Directory']

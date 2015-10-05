@@ -9,7 +9,7 @@ use eig\Imaginator\Imaginator;
 
 class ImaginatorFactory
 {
-    protected $configFiles = [
+    protected static $configFiles = [
         [
             'source'   => 'ImaginatorConfiguration.php',
             'path'     => 'config/',
@@ -19,22 +19,22 @@ class ImaginatorFactory
         ],
     ];
 
-    protected $packageConfig;
+    protected static $packageConfig;
 
-    protected $configOptions;
+    protected static $configOptions;
 
-    protected function loadConfiguration ()
+    protected static function loadConfiguration ()
     {
         // set the Configurator Options
         // including the basePath for where the configuration file exists
-        $this->configOptions = new ConfigOptions();
-        $this->configOptions->basePath = realpath('config');
+        self::$configOptions = new ConfigOptions();
+        self::$configOptions->basePath = realpath('config');
         try
         {
             // try to load and Configurator Configuration for Imaginator
-            $this->packageConfig = new Config(
-                $this->configFiles,
-                $this->configOptions
+            self::$packageConfig = new Config(
+                self::$configFiles,
+                self::$configOptions
             );
         } catch (\Exception $exception)
         {
@@ -46,13 +46,13 @@ class ImaginatorFactory
         }
     }
 
-    protected function packageConfig()
+    protected static function packageConfig()
     {
-        return $this->packageConfig;
+        return self::$packageConfig;
     }
 
-    protected function getPersistenceProvider() {
-        return $this->packageConfig['Imaginator']['Record Persistance Provider'];
+    protected static function getPersistenceProvider() {
+        return  new self::$packageConfig['Imaginator']['Record Persistence Provider']();
     }
 
     public static function make()

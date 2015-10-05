@@ -1,7 +1,7 @@
 <?php
 return [
-    'Record Persistance Provider' => 'ImaginatorFileRecordPersistance',
-    'File Persistance Provider'   => '',
+    'Record Persistence Provider' => 'eig\Imaginator\Providers\ImaginatorFileRecordPersistence',
+    'File Persistence Provider'   => '',
     'Images Directory'            => 'public/images',
     'Directory Structure'         => '',
     'File Naming Convention'      => '',
