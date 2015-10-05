@@ -3,56 +3,27 @@
 namespace eig\Imaginator;
 
 use eig\Configurator\Configurator as Config;
+use eig\Configurator\Configurator;
 use eig\Configurator\Options as ConfigOptions;
 use eig\Imaginator\Exceptions\ImaginatorException;
+use eig\Imaginator\Interfaces\ImaginatorRecordPersistenceProviderInterface;
 
 class Imaginator
 {
-
-    protected $configFiles = [
-        [
-            'source'   => 'ImaginatorConfiguration.php',
-            'path'     => 'config/',
-            'pathType' => 'relative',
-            'type'     => 'array',
-            'alias'    => 'Imaginator'
-        ],
-    ];
-
     protected $config;
 
     protected $packageConfig;
 
-    protected $configOptions;
+    protected $persistence;
 
-    public function __construct ()
+    public function __construct (
+        Configurator $config,
+        ImaginatorRecordPersistenceProviderInterface $persistence
+    )
     {
-        $this->loadConfiguration();
-    }
-
-    protected function loadConfiguration ()
-    {
-        // set the Configurator Options
-        // including the basePath for where the configuration file exists
-        $this->configOptions = new ConfigOptions();
-        $this->configOptions->basePath = realpath('config');
-        try
-        {
-            // try to load and Configurator Configuration for Imaginator
-            $this->packageConfig = new Config(
-                $this->configFiles,
-                $this->configOptions
-            );
-        } catch (\Exception $exception)
-        {
-            throw new ImaginatorException(
-                'Error: Unable to load Imaginator Configuration',
-                1,
-                $exception
-            );
-        }
-        // set the Imaginator configuration to config
-        $this->config = $this->packageConfig['Imaginator'];
+        $this->persistence = $persistence;
+        $this->config = $config['Imaginator'];
+        $this->packageConfig = $config;
     }
 
     protected function checkArguments (array $arguments)
@@ -68,9 +39,17 @@ class Imaginator
         }
     }
 
+    /**
+     * load
+     *
+     * @param  string|array $image
+     * @return Image|ImageCollection
+     * @throws ImaginatorException
+     *
+     */
     public function load ($image)
     {
-        $arguments = array($image);
+        $arguments = [$image];
         try {
             $this->checkArguments($arguments);
         } catch (\Exception $exception) {
@@ -80,14 +59,14 @@ class Imaginator
                 $exception
             );
         }
-        return 'image loaded';
+        return 'image loaded'; //actually get an image or collection of images and return
     }
 
     /**
      * loadImage
      *
-     * @param string|array $image
-     * @return Image
+     * @param  string|array $image
+     * @return Image|ImageCollection
      * @throws ImaginatorException
      *
      */
@@ -104,7 +83,7 @@ class Imaginator
     /**
      * addImage
      *
-     * @param string|array $image
+     * @param  string|array $image
      * @return true
      * @throws ImaginatorException
      *
@@ -123,7 +102,7 @@ class Imaginator
     /**
      * removeImage
      *
-     * @param string|array $image
+     * @param  string|array $image
      * @return true
      * @throws ImaginatorException
      *
