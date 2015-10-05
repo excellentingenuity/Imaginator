@@ -36,6 +36,12 @@ class ImaginatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * testConfigImagesDir
+     *
+     * @test
+     *
+     */
     public function testConfigImagesDir()
     {
         $this->exposedImaginator = Factory::expose(new Imaginator);
@@ -45,6 +51,12 @@ class ImaginatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * testLoad
+     *
+     * @test
+     *
+     */
     public function testLoad()
     {
         $this->assertEquals('image loaded', $this->imaginator->load('image file'));
