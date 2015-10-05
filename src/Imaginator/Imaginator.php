@@ -58,7 +58,7 @@ class Imaginator
     protected function checkArguments (array $arguments)
     {
         foreach ($arguments as $argument) {
-            if ( !is_array($argument) || !is_string($argument) ) {
+            if ( is_array($argument) == false && is_string($argument) == false ) {
                 throw new ImaginatorException(
                     'invalid argument supplied,
                     argument must be a string or an array',
@@ -80,6 +80,7 @@ class Imaginator
                 $exception
             );
         }
+        return 'image loaded';
     }
 
     /**

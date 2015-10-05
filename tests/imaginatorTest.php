@@ -28,7 +28,7 @@ class ImaginatorTest extends \PHPUnit_Framework_TestCase
      *
      * @test
      */
-    public function testConstructor ()
+    public function testConstructor()
     {
         $this->assertInstanceOf(
             'eig\Imaginator\Imaginator',
@@ -36,12 +36,29 @@ class ImaginatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testConfigImagesDir ()
+    public function testConfigImagesDir()
     {
         $this->exposedImaginator = Factory::expose(new Imaginator);
         $this->assertEquals(
             'public/images',
             $this->exposedImaginator->config['Images Directory']
         );
+    }
+
+    public function testLoad()
+    {
+        $this->assertEquals('image loaded', $this->imaginator->load('image file'));
+    }
+
+    /**
+     * testLoadFail
+     *
+     * @test
+     * @expectedException eig\Imaginator\Exceptions\ImaginatorException
+     */
+    public function testLoadFail()
+    {
+        $this->setExpectedExceptionFromAnnotation();
+        $this->imaginator->load(2);
     }
 }
