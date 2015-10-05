@@ -27,9 +27,7 @@ class Imaginator
 
     public function __construct ()
     {
-
-        $this->loadConfiguration ();
-
+        $this->loadConfiguration();
     }
 
     protected function loadConfiguration ()
@@ -41,7 +39,10 @@ class Imaginator
         try
         {
             // try to load and Configurator Configuration for Imaginator
-            $this->packageConfig = new Config($this->configFiles, $this->configOptions);
+            $this->packageConfig = new Config(
+                $this->configFiles,
+                $this->configOptions
+            );
         } catch (\Exception $exception)
         {
             throw new ImaginatorException(
@@ -54,14 +55,44 @@ class Imaginator
         $this->config = $this->packageConfig['Imaginator'];
     }
 
-    public function load ($image)
+    protected function checkArguments (array $arguments)
     {
-
+        foreach ($arguments as $argument) {
+            if ( !is_array($argument) || !is_string($argument) ) {
+                throw new ImaginatorException(
+                    'invalid argument supplied,
+                    argument must be a string or an array',
+                    1
+                );
+            }
+        }
     }
 
+    public function load ($image)
+    {
+        $arguments = array($image);
+        try {
+            $this->checkArguments($arguments);
+        } catch (\Exception $exception) {
+            throw new ImaginatorException(
+                'inavlid argument supplied to load function',
+                1,
+                $exception
+            );
+        }
+    }
+
+    /**
+     * loadImage
+     *
+     * @param string|array $image
+     * @return Image
+     * @throws ImaginatorException
+     *
+     */
     public function loadImage ($image)
     {
-
+        return $this->load($image);
     }
 
     public function add ($image)
@@ -69,9 +100,17 @@ class Imaginator
 
     }
 
+    /**
+     * addImage
+     *
+     * @param string|array $image
+     * @return true
+     * @throws ImaginatorException
+     *
+     */
     public function addImage ($image)
     {
-
+        return $this->add($image);
     }
 
 
@@ -80,8 +119,16 @@ class Imaginator
 
     }
 
+    /**
+     * removeImage
+     *
+     * @param string|array $image
+     * @return true
+     * @throws ImaginatorException
+     *
+     */
     public function removeImage ($image)
     {
-
+        return $this->remove($image);
     }
 }
