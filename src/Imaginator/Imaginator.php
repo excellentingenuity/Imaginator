@@ -54,12 +54,12 @@ class Imaginator
             $this->checkArguments($arguments);
         } catch (\Exception $exception) {
             throw new ImaginatorException(
-                'inavlid argument supplied to load function',
+                'invalid argument supplied to load function',
                 1,
                 $exception
             );
         }
-        return 'image loaded'; //actually get an image or collection of images and return
+        return $this->persistence->load('image loading');
     }
 
     /**

@@ -2,15 +2,14 @@
 
 namespace eig\Imaginator\Tests;
 
+use eig\Configurator\Configurator;
+use eig\Configurator\Options;
 use eig\Imaginator\Factory\ImaginatorFactory;
 use eig\Imaginator\Imaginator;
-use StevenWadeJr\Exposure\Factory;
+use StevenWadeJr\Exposure\Factory as Exposure;
+use Mockery;
 
-/**
- * User: James Johnson
- * Date: 10/4/15
- * Time: 2:35 PM
- */
+
 class ImaginatorTest extends \PHPUnit_Framework_TestCase
 {
 
@@ -18,10 +17,29 @@ class ImaginatorTest extends \PHPUnit_Framework_TestCase
 
     protected $exposedImaginator;
 
+    protected $mockedConfig;
+
     public function setup ()
     {
+        $files = $configFiles = [
+            [
+                'source'   => 'ImaginatorConfiguration.php',
+                'path'     => 'config/',
+                'pathType' => 'relative',
+                'type'     => 'array',
+                'alias'    => 'Imaginator'
+            ],
+        ];
+        $options = new Options();
+        $options->basePath = realpath('config');
         $this->imaginator = ImaginatorFactory::make();
+        $this->mockedConfig = new Configurator($files, $options);
+        //$this->mockedConfig['Imaginator']['Record Persistence Provider'] = 'eig\Imaginator\Providers\ImaginatorFileRecordPersistence';
 
+    }
+
+    public function tearDown() {
+        Mockery::close();
     }
 
     /**
@@ -45,7 +63,7 @@ class ImaginatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testConfigImagesDir()
     {
-        $this->exposedImaginator = Factory::expose(ImaginatorFactory::make());
+        $this->exposedImaginator = Exposure::expose(ImaginatorFactory::make());
         $this->assertEquals(
             'public/images',
             $this->exposedImaginator->config['Images Directory']
@@ -60,7 +78,10 @@ class ImaginatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoad()
     {
-        $this->assertEquals('image loaded', $this->imaginator->load('image file'));
+        $persistence = Mockery::mock('eig\Imaginator\Providers\ImaginatorFileRecordPersistence');
+        $persistence->shouldReceive('load')->once()->andReturn('image loaded');
+        $imaginator = new Imaginator($this->mockedConfig, $persistence);
+        $this->assertEquals('image loaded', $imaginator->load('image file'));
     }
 
     /**

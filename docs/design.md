@@ -6,3 +6,6 @@ Imagator should be extracted to a standalone package
 
 desired use `$image(s) = Imaginator::load($this, 'id');` -> where $this is supplied to get the class name and the property
 that corresponds to the specific instance in the db is supplied.
+
+for thumbnails it should be `$image = Imaginator::loadThumbnail($this, 'id')` or `loadThumbnails($this, 'id')` 
+both should return an instance or collection depending on the number of records
