@@ -9,25 +9,46 @@ class Imaginator
 {
     protected $configFiles = [
         [
-            'source' => 'Imaginator.json',
+            'source' => 'ImaginatorConfiguration.php',
             'path' => '/config/',
             'pathType' => 'relative',
-            'type' => 'json',
+            'type' => 'array',
             'alias' => 'Imaginator'
         ],
     ];
 
     protected $config;
 
+    protected $packageConfig;
+
     protected $configOptions;
 
-    public function __construct() {
-        $this->configOptions = new ConfigOptions();
-        $this->configOptions->basePath = realpath('config');
-        $this->config = new Config($this->configFiles, $this->configOptions);
+    public function __construct($configurationFile = null) {
+
+        $this->loadConfiguration($configurationFile);
+
     }
 
-    public function images_dir() {
-        return $this->config['Imaginator']['images_dir'];
+    protected function loadConfiguration($configurationFile) {
+        $this->configOptions = new ConfigOptions();
+        if ($configurationFile == null) {
+            $this->configOptions->basePath = realpath('config');
+        } else {
+            $this->configOptions->basePath = realpath($configurationFile);
+        }
+        $this->packageConfig = new Config($this->configFiles, $this->configOptions);
+        $this->config = $this->packageConfig['Imaginator'];
+    }
+
+    public function load($file) {
+
+    }
+
+    public function add($file) {
+
+    }
+
+    public function remove($file) {
+
     }
 }

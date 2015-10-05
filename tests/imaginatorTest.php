@@ -25,7 +25,7 @@ class ImaginatorTest extends \PHPUnit_Framework_TestCase
      * @test
      */
     public function testConstructor() {
-        $this->assertInstanceOf('eig\Imaginator\Imaginator', new Imaginator());
+        $this->assertInstanceOf('eig\Imaginator\Imaginator', new Imaginator('example\imaginator.json'));
     }
 
     public function testConfigImagesDir() {
