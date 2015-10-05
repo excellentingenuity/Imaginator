@@ -8,13 +8,14 @@ use eig\Imaginator\Exceptions\ImaginatorException;
 
 class Imaginator
 {
+
     protected $configFiles = [
         [
-            'source' => 'ImaginatorConfiguration.php',
-            'path' => 'config/',
+            'source'   => 'ImaginatorConfiguration.php',
+            'path'     => 'config/',
             'pathType' => 'relative',
-            'type' => 'array',
-            'alias' => 'Imaginator'
+            'type'     => 'array',
+            'alias'    => 'Imaginator'
         ],
     ];
 
@@ -24,13 +25,15 @@ class Imaginator
 
     protected $configOptions;
 
-    public function __construct() {
+    public function __construct ()
+    {
 
-        $this->loadConfiguration();
+        $this->loadConfiguration ();
 
     }
 
-    protected function loadConfiguration() {
+    protected function loadConfiguration ()
+    {
         // set the Configurator Options
         // including the basePath for where the configuration file exists
         $this->configOptions = new ConfigOptions();
@@ -39,8 +42,8 @@ class Imaginator
         {
             // try to load and Configurator Configuration for Imaginator
             $this->packageConfig = new Config($this->configFiles, $this->configOptions);
-        }
-        catch (\Exception $exception) {
+        } catch (\Exception $exception)
+        {
             throw new ImaginatorException(
                 'Error: Unable to load Imaginator Configuration',
                 1,
@@ -51,15 +54,34 @@ class Imaginator
         $this->config = $this->packageConfig['Imaginator'];
     }
 
-    public function load($file) {
+    public function load ($image)
+    {
 
     }
 
-    public function add($file) {
+    public function loadImage ($image)
+    {
 
     }
 
-    public function remove($file) {
+    public function add ($image)
+    {
+
+    }
+
+    public function addImage ($image)
+    {
+
+    }
+
+
+    public function remove ($image)
+    {
+
+    }
+
+    public function removeImage ($image)
+    {
 
     }
 }

@@ -7,7 +7,7 @@ namespace eig\Imaginator\Interfaces;
  * Date: 10/5/15
  * Time: 11:38 AM
  */
-interface ImaginatorPersistanceProviderInterface
+interface ImaginatorRecordPersistenceProviderInterface
 {
 
 }
