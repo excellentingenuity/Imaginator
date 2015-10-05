@@ -2,11 +2,12 @@
 
 namespace eig\Imaginator;
 
-use eig\Configurator\Configurator;
+use eig\Configurator\Configurator as Config;
+use eig\Configurator\Options as ConfigOptions;
 
 class Imaginator
 {
-    protected $config_files = [
+    protected $configFiles = [
         [
             'source' => 'Imaginator.json',
             'path' => '/config/',
@@ -15,9 +16,18 @@ class Imaginator
             'alias' => 'Imaginator'
         ],
     ];
-    protected $config = null;
+
+    protected $config;
+
+    protected $configOptions;
 
     public function __construct() {
-        $this->config = Configurator::make($this->config_files);
+        $this->configOptions = new ConfigOptions();
+        $this->configOptions->basePath = realpath('config');
+        $this->config = new Config($this->configFiles, $this->configOptions);
+    }
+
+    public function images_dir() {
+        return $this->config['Imaginator']['images_dir'];
     }
 }

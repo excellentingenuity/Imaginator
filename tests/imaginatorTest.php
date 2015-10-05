@@ -12,7 +12,23 @@ use eig\Imaginator\Imaginator;
 class ImaginatorTest extends \PHPUnit_Framework_TestCase
 {
 
+    protected $imaginator;
+
+    public function setup()
+    {
+        $this->imaginator = new Imaginator();
+    }
+
+    /**
+     * testConstructor
+     *
+     * @test
+     */
     public function testConstructor() {
         $this->assertInstanceOf('eig\Imaginator\Imaginator', new Imaginator());
+    }
+
+    public function testConfigImagesDir() {
+        $this->assertEquals('public/images', $this->imaginator->images_dir());
     }
 }
