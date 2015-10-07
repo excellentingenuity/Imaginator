@@ -22,7 +22,8 @@
       "php": ">=5.6",
       "league/flysystem": "^1.0",
       "intervention/image": "^2.3",
-      "eig/configurator": "^1.0"
+      "eig/configurator": "^1.0",
+      "data-library/validator": "^2.1"
     },
     "require-dev": {
       "mockery/mockery": "0.9.*",

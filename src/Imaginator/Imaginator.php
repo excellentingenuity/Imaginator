@@ -2,11 +2,10 @@
 
 namespace eig\Imaginator;
 
-use eig\Configurator\Configurator as Config;
 use eig\Configurator\Configurator;
-use eig\Configurator\Options as ConfigOptions;
 use eig\Imaginator\Exceptions\ImaginatorException;
 use eig\Imaginator\Interfaces\ImaginatorRecordPersistenceProviderInterface;
+use DataLibrary\Validator\ValidatorFacade as Validator;
 
 class Imaginator
 {
@@ -19,6 +18,7 @@ class Imaginator
     public function __construct (
         Configurator $config,
         ImaginatorRecordPersistenceProviderInterface $persistence
+
     )
     {
         $this->persistence = $persistence;
@@ -26,18 +26,7 @@ class Imaginator
         $this->packageConfig = $config;
     }
 
-    protected function checkArguments (array $arguments)
-    {
-        foreach ($arguments as $argument) {
-            if ( is_array($argument) == false && is_string($argument) == false ) {
-                throw new ImaginatorException(
-                    'invalid argument supplied,
-                    argument must be a string or an array',
-                    1
-                );
-            }
-        }
-    }
+    // Loaders
 
     /**
      * load
@@ -47,11 +36,10 @@ class Imaginator
      * @throws ImaginatorException
      *
      */
-    public function load ($image)
+    public function load ($uuid)
     {
-        $arguments = [$image];
         try {
-            $this->checkArguments($arguments);
+            $this->checkArguments($uuid, $type = ['string', 'array']);
         } catch (\Exception $exception) {
             throw new ImaginatorException(
                 'invalid argument supplied to load function',
@@ -59,21 +47,19 @@ class Imaginator
                 $exception
             );
         }
-        return $this->persistence->load('image loading');
+        return $this->persistence->load($uuid);
     }
 
-    /**
-     * loadImage
-     *
-     * @param  string|array $image
-     * @return Image|ImageCollection
-     * @throws ImaginatorException
-     *
-     */
-    public function loadImage ($image)
-    {
-        return $this->load($image);
+    public function get($uuid) {
+        return $this->load($uuid);
     }
+
+    public function all() {
+        return $this->persistence->all();
+    }
+
+
+
 
     public function add ($image)
     {
@@ -110,5 +96,39 @@ class Imaginator
     public function removeImage ($image)
     {
         return $this->remove($image);
+    }
+
+    protected function getImageIdentifier()
+    {
+
+    }
+
+    protected function getObjectClass()
+    {
+
+    }
+
+    /**
+     * checkArguments
+     *
+     * @param mixed $argument
+     * @param array $types
+     *
+     * @return bool
+     * @throws \eig\Imaginator\Exceptions\ImaginatorException
+     */
+    protected function checkArguments ($argument, array $types)
+    {
+        foreach ($types as $type) {
+            if (Validator::isValid($type, $argument, false, false, false) == true) {
+                return true;
+            }
+        }
+        throw new ImaginatorException(
+            'invalid argument supplied,
+            argument must be a string or an array',
+            1
+        );
+
     }
 }

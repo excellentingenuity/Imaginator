@@ -19,6 +19,8 @@ class ImaginatorTest extends \PHPUnit_Framework_TestCase
 
     protected $mockedConfig;
 
+    protected $mockedPersistence;
+
     public function setup ()
     {
         $files = $configFiles = [
@@ -34,6 +36,7 @@ class ImaginatorTest extends \PHPUnit_Framework_TestCase
         $options->basePath = realpath('config');
         $this->imaginator = ImaginatorFactory::make();
         $this->mockedConfig = new Configurator($files, $options);
+        $this->mockedPersistence = Mockery::mock('eig\Imaginator\Providers\ImaginatorFileRecordPersistence');
         //$this->mockedConfig['Imaginator']['Record Persistence Provider'] = 'eig\Imaginator\Providers\ImaginatorFileRecordPersistence';
 
     }
@@ -92,6 +95,23 @@ class ImaginatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadFail()
     {
+        $this->setExpectedExceptionFromAnnotation();
+        $this->imaginator->load(2);
+    }
+
+    public function testGet() {
+        $this->mockedPersistence->shouldReceive('load')->once()->andReturn('image loaded');
+        $imaginator = new Imaginator($this->mockedConfig, $this->mockedPersistence);
+        $this->assertEquals('image loaded', $imaginator->load('image file'));
+    }
+
+    /**
+     * testGetFail
+     *
+     * @test
+     * @expectedException eig\Imaginator\Exceptions\ImaginatorException
+     */
+    public function testGetFail() {
         $this->setExpectedExceptionFromAnnotation();
         $this->imaginator->load(2);
     }
