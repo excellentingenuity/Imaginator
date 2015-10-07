@@ -55,9 +55,13 @@ class ImaginatorFactory
         return  new self::$packageConfig['Imaginator']['Record Persistence Provider']();
     }
 
+    protected static function getSpecifierPersistenceProvider() {
+        return new self::$packageConfig['Imaginator']['Specifier Persistence Provider']();
+    }
+
     public static function make()
     {
         self::loadConfiguration();
-        return new Imaginator(self::packageConfig(), self::getPersistenceProvider());
+        return new Imaginator(self::packageConfig(), self::getPersistenceProvider(), self::getSpecifierPersistenceProvider());
     }
 }

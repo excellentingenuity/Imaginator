@@ -6,6 +6,7 @@ use eig\Configurator\Configurator;
 use eig\Imaginator\Exceptions\ImaginatorException;
 use eig\Imaginator\Interfaces\ImaginatorRecordPersistenceProviderInterface;
 use DataLibrary\Validator\ValidatorFacade as Validator;
+use eig\Imaginator\Interfaces\ImaginatorSpecifierPersistenceProviderInterface;
 
 class Imaginator
 {
@@ -15,16 +16,62 @@ class Imaginator
 
     protected $persistence;
 
+    protected $specifierPersistence;
+
+    protected $with;
+
+    protected $by;
+
+    protected $sort;
+
     public function __construct (
         Configurator $config,
-        ImaginatorRecordPersistenceProviderInterface $persistence
-
+        ImaginatorRecordPersistenceProviderInterface $persistence,
+        ImaginatorSpecifierPersistenceProviderInterface $specifierPersistence
     )
     {
         $this->persistence = $persistence;
+        $this->specifierPersistence = $specifierPersistence;
         $this->config = $config['Imaginator'];
         $this->packageConfig = $config;
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Chainable Methods
+    |--------------------------------------------------------------------------
+    | Chainable methods with corresponding properties
+    | and a clearChains method to clear out the chain
+    | after each use of a chainable method
+    */
+
+
+    public function with($modifier, $value) {
+
+    }
+
+    public function by($modifier, $value) {
+
+    }
+
+    public function sort($key, $value, $order) {
+
+    }
+
+    protected function clearChain()
+    {
+        $this->by = null;
+        $this->with = null;
+        $this->sort = null;
+    }
+
+    protected function checkChain() {
+        if ($this->by != null || $this->with != null || $this->sort != null) {
+            return true;
+        }
+        return false;
+    }
+
 
     // Loaders
 
@@ -50,8 +97,28 @@ class Imaginator
         return $this->persistence->load($uuid);
     }
 
+    public function loadBySpecifier($specifier, $id, $uuid) {
+
+    }
+
+    public function loadByAssociation($specifier) {
+
+    }
+
+    public function loadByDate($date) {
+
+    }
+
+    public function loadThumbnail($uuid) {
+
+    }
+
     public function get($uuid) {
         return $this->load($uuid);
+    }
+
+    public function getAssociated($specifier) {
+
     }
 
     public function all() {
